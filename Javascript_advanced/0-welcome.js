@@ -1,11 +1,8 @@
-function welcome(firstName, lastName) {
-    let fullname = firstName + " " + lastName;  
-
-    function displayname() {
-        alert("Welcome " + fullname + "!");
+const welcome=(firstName,lastName)=>{
+    const fullName='${fistName} ${lastName}'
+    
+    const displayFullName =()=>{
+        alert('Welcome ${fullName}!' )
     }
-
-    displayname();  
+    displayFullName()
 }
-
-welcome('holberton', 'school');  
