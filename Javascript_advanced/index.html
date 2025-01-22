@@ -1,4 +1,4 @@
-
+<!-- <!-- 
 <script>
     // Step 1: Create globalVariable
 let globalVariable = "Welcome";
@@ -30,4 +30,36 @@ const outer = () => {
 
 
 outer();
-</script>
+</script> 
+<script>
+    const welcomeMessage = (fullName) => {
+    return () => {
+        alert(`Welcome ${fullName}`);
+       
+       
+    
+    };
+};
+let guillaume = welcomeMessage('Guillaume');
+let alex = welcomeMessage('Alex');
+let fred = welcomeMessage('Fred');
+
+guillaume();
+alex();
+fred();
+// <script>
+//     const welcomeMessage = (fullName) => {
+//         return () => {
+//             alert(`Welcome ${fullName}`);
+//         };
+//     };
+
+//     let guillaume = welcomeMessage('Guillaume');
+//     let alex = welcomeMessage('Alex');
+//     let fred = welcomeMessage('Fred');
+
+//     guillaume();
+//     alex();
+//     fred();
+// </script>
+</script> -->
