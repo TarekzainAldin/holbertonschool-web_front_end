@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+    <head>
+
+        <meta charset="utf-8" />
+        <title>Task 9</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<style>
+			.loading {
+				opacity: 0.2;
+			}
+		</style>
+    </head>
+
+    <body>
+		<script type="application/javascript">
+			window.onload = function run() {
+				createSearchForm();
+			};
+
+			function createSearchForm() {
+				$("body").append(
+					`<input type="text">
+					<input type="submit">
+					<ul></ul>
+					<ul id="pagination"></ul>`); 
+
+					$(`input[type="submit"]`).click(function () {
+						queryWikipedia($(`input[type="text"]`).val()); // query queryWikipedia with value of text 'input'
+					});
+			}
+
+			function addNewArticle(id, title, snippet) {
+				$("ul").append("<li></li>");
+				$("li").last().append(`<p><span>${id}</span> - <b>${title}</b></p>`);
+				$("li").last().append(`<p>${snippet}</p>`);
+			}
+
+			function queryWikipedia(search, offset = 0) {
+				displayLoading(true);
+				$.ajax({
+					type: `GET`,
+					url: `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${search}&format=json`,
+					dataType: `jsonp`,
+					sroffset: `${offset}`,
+					success: function(data) {
+						displayLoading(false);
+						buildPagination(data.query.searchinfo.totalhits, data.continue.sroffset, offset);
+						data.query.search.forEach(item => {
+							addNewArticle(item.pageid, item.title, item.snippet);
+						});
+					}
+				});
+			}
+
+			function buildPagination(numberOfItems, itemsPerPage, currentOffset) {
+				$("#pagination").html(``);
+
+				for (let i = 0; i < (numberOfItems/itemsPerPage); i++) {
+					let li = $("<li></li>");
+					li.append(i);
+					li.css({"cursor": "pointer", "margin-left": "10px", "display": "inline"});
+					if (i === currentOffset) {
+						li.css({"font-weight": "bold"});
+					}
+					li.click(function() {
+						queryWikipedia($("input").first().val(), li.html());
+					});
+					$("#pagination").append(li);
+				}
+			}
+
+			function displayLoading(loading) {
+				if (loading === true) {
+					$("#pagination").first().wrap(`<div class="loading"></div>`);
+				} else {
+					$("#pagination").first().unwrap();
+				}
+			}
+
+		</script>
+
+    </body>
+
+<html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+    <head>
+
+        <meta charset="utf-8" />
+        <title>Task 7</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script type="application/javascript">
+			window.onload = function run() {
+				createSearchForm();
+			};
+
+			function createSearchForm() {
+				$("body").append(
+					`<input type="text">
+					<input type="submit">
+					<ul></ul>`); 
+
+					$(`input[type="submit"]`).click(function () {
+						queryWikipedia($(`input[type="text"]`).val()); // query queryWikipedia with value of text 'input'
+						// console.log($(`input[type="text"]`).val());
+					});
+			}
+
+			function addNewArticle(id, title, snippet) {
+				// let li = $("<li></li>");
+				// let p1 = $("<p></p>");
+				// let p2 = $("<p></p>");
+				// let span = $("<span></span>");
+				// let b = $("<b></b>");
+
+				// b.append(title);
+				// span.append(id + " - ", b);
+				// p1.append(span);
+				// p2.append(snippet);
+				// li.append(p1, p2);
+
+				// $("ul").first().append(li);
+				$("ul").append("<li></li>");
+				$("li").last().append(`<p><span>${id}</span> - <b>${title}</b></p>`);
+				$("li").last().append(`<p>${snippet}</p>`);
+			}
+
+			function queryWikipedia(search) {
+				$.ajax({
+					type: `GET`,
+					url: `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${search}&format=json`,
+					dataType: `jsonp`,
+					success: function(data) {
+						for (let i = 0; i < data.query.search.length; i++) {
+							addNewArticle(data.query.search[i].pageid, data.query.search[i].title, data.query.search[i].snippet);
+						}
+					}
+				});
+
+			}
+		</script>
+		
+    </head>
+
+    <body>
+
+    </body>
+
+<html>
